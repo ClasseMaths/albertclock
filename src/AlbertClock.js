@@ -27,7 +27,7 @@ const styles = {
   },
   block: {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'row',
     alignItems: 'center',
     width: '900px',
   },
@@ -141,37 +141,53 @@ const generateEquation = (target, level) => {
 };
 
 // --- Time Utility Functions ---
+const fetchParisTime = async () => {
+  try {
+    const response = await fetch('https://worldtimeapi.org/api/timezone/Europe/Paris');
+    if (!response.ok) throw new Error('Failed to fetch time');
+    const data = await response.json();
+    return new Date(data.datetime);
+  } catch (error) {
+    console.error('Error fetching Paris time:', error);
+    // Fallback to local time with timezone conversion
+    const now = new Date();
+    return new Date(now.toLocaleString("fr-FR", {timeZone: "Europe/Paris"}));
+  }
+};
+
 const getParisTime = () => {
   const now = new Date();
-  return new Date(now.toLocaleString("en-US", {timeZone: "Europe/Paris"}));
+  return new Date(now.toLocaleString("fr-FR", {timeZone: "Europe/Paris"}));
 };
 
-const getParisHours = () => {
-  return getParisTime().getHours();
+const getParisHours = (date) => {
+  return date.getHours();
 };
 
-const getParisMinutes = () => {
-  return getParisTime().getMinutes();
+const getParisMinutes = (date) => {
+  return date.getMinutes();
 };
 
 // --- Main Component ---
 const AlbertClock = () => {
-  const [time, setTime] = useState(getParisTime());
+  const [time, setTime] = useState(null);
   const [difficulty, setDifficulty] = useState(1);
   const [equations, setEquations] = useState({ 
-    h: generateEquation(getParisHours(), 1), 
-    m: generateEquation(getParisMinutes(), 1) 
+    h: '?', 
+    m: '?' 
   });
   
   // Keep track of the values we currently display to avoid regenerating on every second tick
   const [displayedValues, setDisplayedValues] = useState({
-    h: getParisHours(),
-    m: getParisMinutes()
+    h: null,
+    m: null
   });
 
   const updateEquations = useCallback((newDate, level) => {
-    const currentH = getParisHours();
-    const currentM = getParisMinutes();
+    if (!newDate) return;
+    
+    const currentH = getParisHours(newDate);
+    const currentM = getParisMinutes(newDate);
 
     setDisplayedValues(prev => {
       let newEqs = { ...equations };
@@ -195,12 +211,21 @@ const AlbertClock = () => {
     });
   }, [difficulty, equations]);
 
+  // Initialize time from server on mount
+  useEffect(() => {
+    fetchParisTime().then(date => {
+      setTime(date);
+      updateEquations(date, difficulty);
+    });
+  }, []);
+
   // Tick the clock
   useEffect(() => {
     const timer = setInterval(() => {
-      const now = getParisTime();
-      setTime(now);
-      updateEquations(now, difficulty);
+      fetchParisTime().then(date => {
+        setTime(date);
+        updateEquations(date, difficulty);
+      });
     }, 1000);
 
     return () => clearInterval(timer);
@@ -209,11 +234,13 @@ const AlbertClock = () => {
   // Handle difficulty change immediately
   const handleDifficultyChange = (level) => {
     setDifficulty(level);
-    // Force regeneration
-    setEquations({
-      h: generateEquation(getParisHours(), level),
-      m: generateEquation(getParisMinutes(), level)
-    });
+    if (time) {
+      // Force regeneration
+      setEquations({
+        h: generateEquation(getParisHours(time), level),
+        m: generateEquation(getParisMinutes(time), level)
+      });
+    }
   };
 
   return (
