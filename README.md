@@ -1,3 +1,9 @@
+# Albert Clock
+
+**Live Demo:** [https://ClasseMaths.github.io/albertclock/](https://ClasseMaths.github.io/albertclock/)
+
+A math-based clock displaying time as equations of varying difficulty levels.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
