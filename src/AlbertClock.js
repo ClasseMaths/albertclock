@@ -32,9 +32,9 @@ const styles = {
     width: '900px',
   },
   equation: {
-    fontSize: '12rem',
+    fontSize: 'clamp(4rem, 15vw, 12rem)',
     textAlign: 'center',
-    height: '12rem', // Fixed height to prevent jumping
+    height: 'clamp(4rem, 15vw, 12rem)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
