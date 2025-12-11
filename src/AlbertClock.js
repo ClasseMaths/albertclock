@@ -84,7 +84,7 @@ const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) +
 const generateEquation = (target, level) => {
   // Level 1: Addition (a + b)
   if (level === 1) {
-    const a = getRandomInt(0, target);
+    const a = getRandomInt(1, target);
     const b = target - a;
     return `${a} + ${b}`;
   }
@@ -125,13 +125,17 @@ const generateEquation = (target, level) => {
   if (level === 4) {
     const c = getRandomInt(1, 10);
     const intermediate = target + c; // a + b = intermediate
-    const a = getRandomInt(0, intermediate);
+    const a = getRandomInt(1, intermediate);
     const b = intermediate - a;
     return `${a} + ${b} - ${c}`;
   }
 
-  // Level 5: Advanced Multiplications & Divisions
+  // Level 5: Advanced Multiplications & Additions
   if (level === 5) {
+    const a = getRandomInt(1, 9);
+    const b = target%a;
+    const c = (target-b)/a;
+    return `${a} × ${c} + ${b}`;
   }
       // Level 5: Advanced Multiplications & Divisions
   if (level === 6) {
@@ -290,7 +294,7 @@ const AlbertClock = () => {
       {/* Difficulty Controls */}
       <div style={styles.controls}>
         <span style={{ marginRight: '10px', fontSize: '0.8rem', opacity: 0.8 }}>LEVEL:</span>
-        {[0,1, 2, 3, 4].map((level) => (
+        {[0,1, 2, 3, 4, 5].map((level) => (
           <button
             key={level}
             onClick={() => handleDifficultyChange(level)}
