@@ -27,7 +27,7 @@ const styles = {
   },
   block: {
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
     width: '900px',
   },
@@ -67,7 +67,7 @@ const styles = {
     transition: 'all 0.2s',
   }),
   separator: {
-    fontSize: '4rem',
+    fontSize: '2rem',
     animation: 'blink 1s infinite',
   },
   solution: {
@@ -263,10 +263,10 @@ const AlbertClock = () => {
       <div style={styles.clockFace} className="clock-face">
         {/* Hours */}
         <div style={styles.block}>
+          <div style={styles.label}>Heures</div>
           <div style={styles.equation}>
             {equations.h}
           </div>
-          <div style={styles.label}>Heures</div>
         </div>
 
         {/* Separator */}
@@ -274,10 +274,10 @@ const AlbertClock = () => {
 
         {/* Minutes */}
         <div style={styles.block}>
+          <div style={styles.label}>Minutes</div>
           <div style={styles.equation}>
             {equations.m}
           </div>
-          <div style={styles.label}>Minutes</div>
         </div>
       </div>
 
