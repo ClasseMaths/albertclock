@@ -133,12 +133,32 @@ const generateEquation = (target, level) => {
   // Level 5: Advanced Multiplications & Additions
   if (level === 5) {
     const a = getRandomInt(1, 9);
+    const d = getRandomInt(0,1); // Ordre des opérations
+    const typeop = getRandomInt(0,1); // Type d'opération Addition ou Soustraction
     const b = target%a;
     const c = (target-b)/a;
-    return `${a} × ${c} + ${b}`;
+    if (typeop === 0) {
+    if (d === 0) {
+      return `${a} × ${c} + ${b}`;
+    }
+    else {
+      return `${b} + ${a} × ${c}`;
+    }}
+    else {
+        return `${a+1} × ${c} - ${b+a}`;
+    }
   }
-      // Level 5: Advanced Multiplications & Divisions
+      // Level 5: Advanced Calculus with parenthesis
   if (level === 6) {
+    const a = getRandomInt(1,9);
+    const d = getRandomInt(1,9);
+    const c = target-a*d;
+    if (c >= 0) {
+      return `${a} × ${d} + ${c}`;
+    }else {
+      return `${a} × ${d} - ${c}`;
+    }
+
   }
 
   return target;
@@ -294,7 +314,7 @@ const AlbertClock = () => {
       {/* Difficulty Controls */}
       <div style={styles.controls}>
         <span style={{ marginRight: '10px', fontSize: '0.8rem', opacity: 0.8 }}>LEVEL:</span>
-        {[0,1, 2, 3, 4, 5].map((level) => (
+        {[0,1, 2, 3, 4, 5, 6].map((level) => (
           <button
             key={level}
             onClick={() => handleDifficultyChange(level)}
