@@ -145,7 +145,7 @@ const generateEquation = (target, level) => {
       return `${b} + ${a} × ${c}`;
     }}
     else {
-        return `${a+1} × ${c} - ${b+a}`;
+        return `${a+1} × ${b} - ${b+a}`;
     }
   }
       // Level 5: Advanced Calculus with parenthesis
@@ -156,7 +156,7 @@ const generateEquation = (target, level) => {
     if (c >= 0) {
       return `${a} × ${d} + ${c}`;
     }else {
-      return `${a} × ${d} - ${c}`;
+      return `${a} × ${d} - ${Math.abs(c)}`;
     }
 
   }
