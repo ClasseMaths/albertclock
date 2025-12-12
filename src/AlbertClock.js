@@ -314,7 +314,7 @@ const AlbertClock = () => {
       {/* Difficulty Controls */}
       <div style={styles.controls}>
         <span style={{ marginRight: '10px', fontSize: '0.8rem', opacity: 0.8 }}>LEVEL:</span>
-        {[0,1, 2, 3, 4, 5, 6].map((level) => (
+        {[0, 1, 2, 3, 4, 5, 6].map((level) => (
           <button
             key={level}
             onClick={() => handleDifficultyChange(level)}
